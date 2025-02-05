@@ -22,7 +22,7 @@ CustomServerNameAPI 专为自定义服务器名称而设计，是一个插件化
 | `/customservernameapi help` | 显示与一级默认命令相同的帮助信息。 | `/customservernameapi help` |
 
 ## 权限节点
-本插件无普通用户权限，所有权限统一为 customservernameapi.admin
+本插件无普通用户权限，所有权限统一为 `customservernameapi.admin`
 
 ## 安装与配置
 1. **安装**：将插件的jar文件放置在Bukkit服务器的`plugins`文件夹中，重启服务器即可完成安装。
