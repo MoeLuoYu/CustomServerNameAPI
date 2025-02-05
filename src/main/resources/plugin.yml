@@ -1,0 +1,45 @@
+name: CustomServerNameAPI
+main: xyz.moeluoyu.customservernameapi.Main
+author: MoeluoYu
+version: 3.0
+soft-depend: [PlaceholderAPI]
+commands:
+  customservernameapi:
+    aliases: [csna]
+    description: CustomServerName API 主命令
+    usage: /customservernameapi [reload|update [name|alias|autogeneratealias] <新的名称或别名>|togglepersist]
+    permission: customservernameapi.admin
+    permission-message: 你没有权限使用此命令。
+    subcommands:
+      reload:
+        description: 重新加载配置文件
+        permission: customservernameapi.admin
+      update:
+        description: 更新服务器名称或别名
+        permission: customservernameapi.admin
+        usage: /customservernameapi update [name|alias|autogeneratealias] <新的名称或别名>
+        subcommands:
+          name:
+            description: 更新服务器名称
+            permission: customservernameapi.admin
+            usage: /customservernameapi update name <新的服务器名称>
+          alias:
+            description: 更新服务器别名
+            permission: customservernameapi.admin
+            usage: /customservernameapi update alias <新的服务器别名>
+          autogeneratealias:
+            description: 开关自动生成别名功能
+            permission: customservernameapi.admin
+            usage: /customservernameapi update autogeneratealias
+      togglepersist:
+        description: 切换持久拓展开关
+        permission: customservernameapi.admin
+        usage: /customservernameapi togglepersist
+      info:
+        description: 查询配置文件设置项状态
+        permission: customservernameapi.admin
+        usage: /customservernameapi info
+      help:
+        description: 显示帮助信息
+        permission: customservernameapi.admin
+        usage: /customservernameapi help
