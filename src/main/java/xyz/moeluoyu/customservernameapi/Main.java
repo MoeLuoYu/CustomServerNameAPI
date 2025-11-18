@@ -1,5 +1,6 @@
 package xyz.moeluoyu.customservernameapi;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -12,13 +13,16 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Main extends JavaPlugin implements TabCompleter {
+public class Main extends org.bukkit.plugin.java.JavaPlugin {
 
     private PlaceholderExpansion placeholderExpansion;
-    // 定义当前插件配置文件的版本号
-    static final String CURRENT_CONFIG_VERSION = "3.0";
     // 颜色代码正则表达式
     private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("([&§])[0-9a-fk-orA-FK-OR]");
+    
+    // 获取当前插件配置文件的版本号
+    private String getCurrentConfigVersion() {
+        return getDescription().getVersion();
+    }
 
     @Override
     public void onEnable() {
@@ -48,22 +52,12 @@ public class Main extends JavaPlugin implements TabCompleter {
     public void checkConfigVersion() {
         // 检查配置文件版本号
         String configVersion = getConfig().getString("version");
-        if (!Objects.equals(configVersion, CURRENT_CONFIG_VERSION)) {
+        String currentVersion = getCurrentConfigVersion();
+        if (!Objects.equals(configVersion, currentVersion)) {
             getLogger().warning("检测到旧版本配置文件，正在更新...");
             // 更新配置文件中的 version 值
-            getConfig().set("version", CURRENT_CONFIG_VERSION);
+            getConfig().set("version", currentVersion);
             saveConfig();
-            // 删除处理方式不妥当，后续版本更新会导致配置文件变为默认
-            // 删除旧的配置文件
-            // File configFile = new File(getDataFolder(), "config.yml");
-            // if (configFile.delete()) {
-            // 重新保存默认配置文件
-            // saveDefaultConfig();
-            //     getLogger().info("配置文件已更新到最新版本");
-            //     reloadConfig();
-            // } else {
-            //     getLogger().warning("无法删除旧配置文件，请手动删除后重试");
-            // }
         }
     }
 
@@ -227,15 +221,27 @@ public class Main extends JavaPlugin implements TabCompleter {
     }
 
     private String generateAlias(String name) {
-        // 查找所有颜色代码
+        // 查找所有传统颜色代码
         Matcher matcher = COLOR_CODE_PATTERN.matcher(name);
         int lastColorCodeIndex = -1;
         while (matcher.find()) {
             lastColorCodeIndex = matcher.end();
         }
+        
+        // 查找16进制颜色代码
+        Pattern hexColorPattern = Pattern.compile("([<{])#([A-Fa-f0-9]{6})([>}])");
+        Matcher hexMatcher = hexColorPattern.matcher(name);
+        int lastHexColorIndex = -1;
+        while (hexMatcher.find()) {
+            lastHexColorIndex = hexMatcher.end();
+        }
+        
+        // 确定最后一个颜色代码的位置
+        int lastColorIndex = Math.max(lastColorCodeIndex, lastHexColorIndex);
+        
         // 如果有颜色代码，取最后一个颜色代码后的第一个字符
-        if (lastColorCodeIndex != -1 && lastColorCodeIndex < name.length()) {
-            String firstCharAfterLastColorCode = name.substring(lastColorCodeIndex, lastColorCodeIndex + 1);
+        if (lastColorIndex != -1 && lastColorIndex < name.length()) {
+            String firstCharAfterLastColorCode = name.substring(lastColorIndex, lastColorIndex + 1);
             if (Pattern.matches("^[a-zA-Z0-9]", firstCharAfterLastColorCode)) {
                 return firstCharAfterLastColorCode.toUpperCase();
             }
