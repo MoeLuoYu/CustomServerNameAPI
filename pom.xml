@@ -6,7 +6,7 @@
     <!-- 项目基本信息 -->
     <groupId>xyz.moeluoyu</groupId>
     <artifactId>CustomServerNameAPI</artifactId>
-    <version>3.0</version>
+    <version>4.0</version>
     <packaging>jar</packaging>
 
     <!-- 项目属性，指定 Java 版本 -->
