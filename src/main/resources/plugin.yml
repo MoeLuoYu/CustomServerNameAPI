@@ -1,7 +1,7 @@
 name: CustomServerNameAPI
 main: xyz.moeluoyu.customservernameapi.Main
 author: MoeluoYu
-version: 3.0
+version: 4.0
 soft-depend: [PlaceholderAPI]
 commands:
   customservernameapi:
